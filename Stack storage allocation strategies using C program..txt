@@ -1,0 +1,273 @@
+#include&lt;stdio.h&gt;
+#include&lt;conio.h&gt;
+#include&lt;stdlib.h&gt;
+#define TRUE 1
+#define FALSE 0
+typedef struct Heap
+{ int data;
+
+struct Heap *next;
+}node;
+node *create();
+void main()
+{ /local declarations/
+int choice,val;
+char ans;
+node *head;
+void display(node *);
+node *search(node *,int);
+node *insert(node *);
+void dele(node **);
+head=NULL;
+do
+{ clrscr();
+printf(&quot;\n Program to perform various operations on heapusing dynamic memory
+management&quot;);
+printf(&quot;\n1.Create&quot;);
+printf(&quot;\n2.Display&quot;);
+printf(&quot;\n3.Insert an element in a list&quot;);
+printf(&quot;\n4.Delete an element from list&quot;);
+printf(&quot;\n5.Quit&quot;);
+
+printf(&quot;\n Enter Your Choice(1-5)&quot;);
+scanf(&quot;%d&quot;,&amp;choice);
+switch(choice)
+{ case 1:head=create();
+break;
+case 2:display(head);
+break;
+case 3:head=insert(head);
+break;
+case 4:dele(&amp;head);
+break;
+case 5:exit(0);
+default:clrscr();
+printf(&quot;Invalid Choice,Try again&quot;);
+getch();
+}}
+while(choice!=5);
+}
+node *create()
+{
+node *temp,*new1,*head;
+int val,flag;
+
+char ans=&#39;y&#39;;
+node *get_node();
+temp=NULL;
+flag=TRUE;
+/flag to indicate whether a new node is created for the first time or not/
+do
+{
+printf(&quot;\n Enter the Element&quot;);
+scanf(&quot;%d&quot;,&amp;val);
+/allocate new node/
+new1=get_node();
+if(new1==NULL)
+printf(&quot;\n Memory is not allocated&quot;);
+new1-&gt; data=val;
+if (flag==TRUE)/* Executed only for the first time*/
+{
+head=new1;
+temp=head; /head is the first node in the heap/
+flag=FALSE;
+} else
+{ /temp keeps track of the most recently created node/
+temp-&gt;next=new1;
+
+temp=new1;
+}
+printf(&quot;\nDo you want to enter more elements?(y/n)&quot;);
+ans=getch();
+}while(ans==&#39;y&#39;);
+printf(&quot;\nThe list is created&quot;);
+getch();
+clrscr();
+return head;
+}
+node *get_node()
+{
+node *temp;
+temp=(node*)malloc(sizeof(node));
+//using the mem. Allocation function
+temp-&gt;next=NULL;
+return temp;
+}
+void display(node*head)
+{
+node *temp;
+temp=head;
+
+if(temp==NULL)
+{
+printf(&quot;\n The list is empty\n&quot;);
+getch();
+clrscr();
+return;
+}
+while(temp!= NULL)
+{
+printf(&quot;%d-&gt;&quot;,temp-&gt; data);
+temp=temp-&gt;next;
+}
+printf(&quot;NULL&quot;);
+getch();
+clrscr();
+}
+node *search(node *head,int key)
+{
+node *temp;
+int found;
+temp=head;
+if (temp==NULL)
+
+{
+printf(&quot;The linked list is empty\n&quot;);
+getch();
+clrscr();
+return NULL;
+}
+found=FALSE;
+while((temp!=NULL)&amp;&amp;(found==FALSE))
+{ if(temp-&gt;data != key)
+temp = temp-&gt;next;
+else
+found = TRUE;
+} if(found == TRUE)
+{
+printf(&quot;\n The Elements is present in the list\n&quot;);
+getch();
+return temp;
+} else
+printf(&quot;\n The Element is not present in the list\n&quot;);
+getch();
+return NULL;
+}
+
+node *insert(node *head)
+{ int choice;
+node insert_head(node);
+void insert_after(node*);
+void insert_last(node*);
+printf(&quot;\nInsert a node as a head node&quot;);
+printf(&quot;\nInsert a node as a last node&quot;);
+printf(&quot;\nInsert a node as at the intermediate position in the list &quot;);
+printf(&quot;\nEnter your choice for insertion of node &quot;);
+scanf(&quot;%d&quot;,&amp;choice);
+switch(choice)
+{ case 1:head =
+insert_head(head);
+break;
+case 2:insert_last(head);
+break;
+case 3:insert_after (head);
+break;
+}
+return head;
+} /Insertion of node at first position/
+node *insert_head(node*head)
+
+{
+node *New,*temp;
+New = get_node();
+printf (&quot;\n Enter the element which you want to insert &quot;);
+scanf(&quot;%d&quot;,&amp;New-&gt;data);
+if(head == NULL)
+head = New;
+else
+{ temp=head;
+New-&gt;next = temp;
+head= New;
+}
+return head;
+} /Insertion of node at last position/
+void insert_last(node *head)
+{
+node *New,*temp;
+New = get_node();
+printf (&quot;\n Enter the element which you want to insert &quot;);
+scanf(&quot;%d&quot;,&amp;New-&gt;data);
+if(head == NULL)
+{
+
+head = New;
+} else
+{ temp=head;
+while(temp-&gt;next!=NULL)
+temp=temp-&gt;next;
+temp-&gt;next=New;
+New-&gt;next=NULL;
+}} /Insertion of node at intermediate position/
+void insert_after(node *head)
+{ int key;
+node *New,*temp;
+New = get_node();
+printf(&quot;Enter the element after which you want to insert &quot;);
+scanf(&quot;%d&quot;,&amp;key);
+temp=head;
+do
+{ if(temp-&gt;data==key)
+{
+printf (&quot;Enter element which you want to insert &quot;);
+scanf(&quot;%d&quot;,&amp;New-&gt;data);
+New-&gt;next=temp-&gt;next;
+temp-&gt;next=New;
+
+return;
+} else
+temp=temp-&gt;next;
+}while(temp!=NULL);
+}
+node *get_prev(node *head,int val)
+{
+node *temp,*prev;
+int flag;
+temp = head;
+if(temp == NULL)
+return NULL;
+flag = FALSE;
+prev = NULL;
+while(temp!=NULL &amp;&amp; !flag)
+{ if(temp-&gt;data!=val)
+{
+prev = temp;
+temp = temp-&gt;next;
+} else
+flag = TRUE;
+} if(flag) /if Flag is true/
+
+return prev;
+else
+return NULL;
+}
+void dele(node **head)
+{ int key;
+node *New,*temp, *prev;
+temp=*head;
+if (temp== NULL)
+{
+printf (&quot;\n The list is empty\n &quot;);
+getch();
+clrscr();
+return;
+} clrscr();
+printf(&quot;\nENTER the Element you want to delete:&quot;);
+scanf(&quot;%d&quot;,&amp;key);
+temp= search(*head,key);
+if(temp !=NULL)
+{
+prev = get_prev(*head,key);
+if(prev != NULL)
+
+{
+prev -&gt;next = temp-&gt; next;
+free(temp);
+} else
+{
+*head = temp-&gt;next;
+free(temp); // using the mem. Dellocation function
+}
+printf(&quot;\nThe Element is deleted\n&quot;);
+getch();
+clrscr();
+}}
